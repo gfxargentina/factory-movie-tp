@@ -4,7 +4,11 @@
   "description": "Trabajo Practico Final - Skill Factory NodeJS by Avalith",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "test": "mocha src/test/test.js --exit ",
+    "db:create": "npx sequelize-cli db:create",
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "db:seed": "npx sequelize-cli db:seed:all"
   },
   "author": "Luis Chilo",
   "license": "ISC",
@@ -15,6 +19,12 @@
     "express": "^4.18.2",
     "helmet": "^6.0.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.25.3"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^6.5.2"
   }
 }
