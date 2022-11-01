@@ -16,7 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 //enpoints
-//app.use('/auth', require('./routes/auth.routes'));
+app.use('/auth', require('./routes/auth.routes'));
+//app.use('/user', require('./routes/user.routes'));
+//app.use('./movie', require('./routes/movie.routes'));
 
 app.listen(process.env.PORT || 5000, () => {
   console.log('Server Listening in', process.env.PORT);
