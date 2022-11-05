@@ -1,3 +1,5 @@
+const { handleError } = require('../middlewares/handleError');
+
 const userModel = require('../database/models').User;
 const rentalModel = require('../database/models').Rental;
 const movieModel = require('../database/models').Movie;
@@ -19,7 +21,7 @@ const getAllUserRentals = async (req, res) => {
     });
     res.status(200).json(allUsers);
   } catch (error) {
-    console.log(error);
+    handleError(res, 'There was an Error obtaining all the Users Rentals', 404);
   }
 };
 
@@ -45,8 +47,7 @@ const allUserMovies = async (req, res) => {
       movies,
     });
   } catch (error) {
-    console.log(error);
-    res.send('Error, verificar');
+    handleError(res, 'There was an Error obtaining all the Users Movies', 404);
   }
 };
 
