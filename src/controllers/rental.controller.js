@@ -2,6 +2,7 @@ const rentalModel = require('../database/models').Rental;
 const movieModel = require('../database/models').Movie;
 const movieRentalModel = require('../database/models').Movie_Rental;
 const { Op } = require('sequelize');
+const { handleError } = require('../middlewares/handleError');
 
 const movieRent = async (req, res) => {
   const { code } = req.params;
@@ -31,8 +32,6 @@ const movieRent = async (req, res) => {
       where: { code: code },
     });
 
-    console.log(updateMovie);
-
     //junction table -Many to Many
     await movieRentalModel.create({
       rentalID: newRental.rental_id,
@@ -45,33 +44,147 @@ const movieRent = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.send('algo salio mal');
+    handleError(res, 'there was an error trying to rent the movie', 404);
   }
 };
 
-//   movieModel
-//     .findOne({
-//       where: { code: code, stock: { [Op.gt]: 0 } },
-//     })
-//     .then((rental) => {
-//       if (!rental) throw new Error(' Missing stock ');
-//       rentalModel
-//         .create({
-//           code: rental.code,
-//           user_id: req.user.id,
-//           rental_date: Date.now(),
-//           refund_date: new Date(Date.now() + 3600 * 1000 * 24 * 7),
-//           total_cost: 10,
-//         })
-//         .then((data) => {
-//           movieModel
-//             .update(
-//               { stock: rental.stock - 1, rentals: rental.rentals + 1 },
-//               { where: { code: rental.code } }
-//             )
-//             .then(() => res.status(201).send(data));
-//         });
-//     });
-// };
+const returnMovie = async (req, res, next) => {
+  const { code } = req.params;
 
-module.exports = movieRent;
+  try {
+    //actualiza la pelicula alquilada con la fecha en la que el usuario devuelve la pelicula
+    const updatedRental = await rentalModel.update(
+      { userRefund_date: Date.now() },
+      { where: { code: code, user_id: req.user.id } }
+    );
+
+    //busca la pelicula alquilada actualizada
+    const updatedMovieRent = await rentalModel.findOne({
+      where: { code: code },
+    });
+
+    //busca la pelicula
+    let movie = await movieModel.findOne({ where: { code: code } });
+
+    //actualiza el stock de la pelicula
+    const updatedMovie = await movieModel.update(
+      { stock: movie.stock + 1 },
+      { where: { code: code } }
+    );
+
+    //realiza el cobro dependiendo la fecha en que el usuario devolvio la pelicula
+    if (
+      daysDifference(
+        updatedMovieRent.rental_date,
+        updatedMovieRent.userRefund_date
+      ) <=
+      daysDifference(updatedMovieRent.rental_date, updatedMovieRent.refund_date)
+    ) {
+      const daysDiff = daysDifference(
+        updatedMovieRent.rental_date,
+        updatedMovieRent.refund_date
+      );
+      if (daysDiff === 0) {
+        res.status(200).send({
+          msg: 'On-time delivery, Final price $1',
+        });
+      } else {
+        res.status(200).send({
+          msg: `On-time delivery, Final price $${daysDiff}`,
+        });
+      }
+    } else {
+      const penalty = lateRefund(
+        daysDifference(
+          updatedMovieRent.rental_date,
+          updatedMovieRent.refund_date
+        ) * 10,
+        daysDifference(
+          updatedMovieRent.userRefund_date,
+          updatedMovieRent.refund_date
+        )
+      );
+      res
+        .status(200)
+        .send({ msg: `Late delivery, the penalty is $${penalty}` });
+    }
+  } catch (error) {
+    console.log(error);
+    handleError(res, 'there was an error trying to return the movie', 404);
+  }
+
+  //   rentalModel
+  //     .update(
+  //       { userRefund_date: Date.now() },
+  //       { where: { code: code, user_id: req.user.id } }
+  //     )
+  //     .then(async (rent) => {
+  //       let updatedMovieRent = await rentalModel.findOne({
+  //         where: { code: code },
+  //       });
+  //       let movie = await movieModel.findOne({ where: { code: code } });
+  //       movieModel
+  //         .update({ stock: movie.stock + 1 }, { where: { code: code } })
+  //         .then(async () => {
+  //           if (
+  //             daysDifference(
+  //               updatedMovieRent.rental_date,
+  //               updatedMovieRent.userRefund_date
+  //             ) <=
+  //             daysDifference(
+  //               updatedMovieRent.rental_date,
+  //               updatedMovieRent.refund_date
+  //             )
+  //           ) {
+  //             const daysDiff = daysDifference(rent.rental_date, rent.refund_date);
+
+  //             res.status(200).send({
+  //               msg: `Entrega a tiempo, Precio final $${daysDiff}`,
+  //             });
+  //           } else {
+  //             //res.send('hacer multa');
+  //             await res.status(200).send({
+  //               msg: `Late delivery, Final price: ${lateRefund(
+  //                 daysDifference(
+  //                   updatedMovieRent.rental_date,
+  //                   updatedMovieRent.refund_date
+  //                 ) * 10,
+  //                 daysDifference(
+  //                   updatedMovieRent.userRefund_date,
+  //                   updatedMovieRent.refund_date
+  //                 )
+  //               )} `,
+  //             });
+  //           }
+  //         });
+  //     });
+};
+
+const daysDifference = (start, end) => {
+  const dateOne = new Date(start);
+
+  const dateSecond = new Date(end);
+
+  const oneDay = 1000 * 3600 * 24;
+
+  const differenceTime = dateSecond.getTime() - dateOne.getTime();
+
+  const differenceDays = Math.round(differenceTime / oneDay);
+
+  return differenceDays;
+};
+
+const lateRefund = (originalPrice, daysLate) => {
+  let finalPrice = originalPrice;
+
+  for (let i = 0; i < daysLate; i++) {
+    finalPrice += finalPrice * 0.1;
+  }
+
+  return finalPrice;
+};
+
+module.exports = {
+  movieRent,
+  returnMovie,
+};
