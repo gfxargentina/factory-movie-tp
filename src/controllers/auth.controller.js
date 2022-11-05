@@ -37,7 +37,34 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  res.send('LOGIN');
+  const { email, password } = req.body;
+
+  try {
+    const user = await userModel.findOne({ where: { email: email } });
+    if (!user) {
+      return res.status(400).json({
+        msg: `There is no user with this email address ${email}`,
+      });
+    }
+
+    const validPassword = bcrypt.compareSync(password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({
+        msg: 'Incorrect user or password',
+      });
+    }
+
+    const token = await generateJWT(user.id);
+    res.json({
+      msg: 'successful login',
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      msg: 'login failed, Talk to the administrator',
+    });
+  }
 };
 
 module.exports = {
