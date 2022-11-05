@@ -1,7 +1,9 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+const movieModel = require('../models').Movie;
+const rentalModel = require('../models').Rental;
+const userModel = require('../models').User;
+
+('use strict');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Movie_Rental extends Model {
     /**
@@ -13,12 +15,27 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Movie_Rental.init({
-    rentalID: DataTypes.STRING,
-    movieID: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Movie_Rental',
-  });
+  Movie_Rental.init(
+    {
+      rentalID: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: rentalModel,
+          key: 'rental_id',
+        },
+      },
+      movieID: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: movieModel,
+          key: 'id',
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: 'Movie_Rental',
+    }
+  );
   return Movie_Rental;
 };

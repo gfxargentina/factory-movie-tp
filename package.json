@@ -8,7 +8,8 @@
     "test": "mocha src/test/test.js --exit ",
     "db:create": "npx sequelize-cli db:create",
     "db:migrate": "npx sequelize-cli db:migrate",
-    "db:seed": "npx sequelize-cli db:seed:all"
+    "db:seed": "npx sequelize-cli db:seed:all",
+    "db:undoall": "npx sequelize-cli db:migrate:undo:all"
   },
   "author": "Luis Chilo",
   "license": "ISC",

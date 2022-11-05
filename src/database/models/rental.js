@@ -1,7 +1,7 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+const user = require('../models').User;
+
+('use strict');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Rental extends Model {
     /**
@@ -11,17 +11,48 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Rental.belongsTo(models.User);
+      Rental.belongsToMany(models.Movie, {
+        through: 'Movie_Rental',
+        foreignKey: 'rentalID',
+      });
     }
   }
-  Rental.init({
-    rental_id: DataTypes.STRING,
-    user_id: DataTypes.STRING,
-    rental_date: DataTypes.STRING,
-    rental_expiry: DataTypes.STRING,
-    total_cost: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Rental',
-  });
+  Rental.init(
+    {
+      rental_id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: user,
+          key: 'id',
+        },
+      },
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      rental_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      refund_date: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      total_cost: DataTypes.INTEGER,
+      UserId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Rental',
+    }
+  );
   return Rental;
 };
