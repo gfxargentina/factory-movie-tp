@@ -26,6 +26,9 @@ module.exports = {
       UserId: {
         type: Sequelize.INTEGER,
       },
+      FavoriteMovieId: {
+        type: Sequelize.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

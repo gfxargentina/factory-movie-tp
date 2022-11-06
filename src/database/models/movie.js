@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'movieID',
       });
       Movie.belongsTo(models.User);
+      Movie.belongsTo(models.FavoriteMovie);
     }
   }
 
@@ -28,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       stock: DataTypes.INTEGER,
       rentals: DataTypes.INTEGER,
       UserId: DataTypes.INTEGER,
+      FavoriteMovieId: DataTypes.INTEGER,
     },
     {
       sequelize,

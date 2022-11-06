@@ -1,39 +1,26 @@
 'use strict';
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Rentals', {
-      rental_id: {
+    await queryInterface.createTable('FavoriteMovies', {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      code: {
+      MovieCode: {
         type: Sequelize.STRING,
+        unique: true,
         allowNull: false,
         foreignKey: true,
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-      },
-      rental_date: {
-        type: Sequelize.DATE,
-      },
-      refund_date: {
-        type: Sequelize.DATE,
-      },
-      userRefund_date: {
-        type: Sequelize.DATE,
-      },
-      total_cost: {
-        type: Sequelize.INTEGER,
-      },
       UserId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        foreignKey: true,
       },
-      FavoriteMovieId: {
-        type: Sequelize.INTEGER,
+      review: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -46,6 +33,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Rentals');
+    await queryInterface.dropTable('FavoriteMovies');
   },
 };

@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
       userRefund_date: DataTypes.DATE,
       total_cost: DataTypes.INTEGER,
       UserId: DataTypes.INTEGER,
+      FavoriteMovieId: DataTypes.INTEGER,
     },
     {
       sequelize,
