@@ -80,7 +80,8 @@ const addFavouriteMovie = async (req, res, next) => {
     const { review } = req.body;
 
     movieModel.findOne({ where: { code: code } }).then((film) => {
-      if (!film) throw new Error(' Pelicula no disponible ');
+      if (!film)
+        handleError(res, 'there was a problem adding the favorite movie', 404);
 
       const newFavouriteFilms = {
         MovieCode: film.code,
@@ -89,38 +90,47 @@ const addFavouriteMovie = async (req, res, next) => {
       };
 
       favoriteMovieModel.create(newFavouriteFilms).then((newFav) => {
-        if (!newFav) throw new Error('FAILED to add favorite movie');
+        if (!newFav) handleError(res, 'FAILED to add favorite movie', 404);
 
-        res.status(201).send('Movie Added to Favorites');
+        res.status(201).send({ msg: 'Movie Added to Favorites' });
       });
     });
   } catch (error) {
-    (error) => next(error);
+    handleError(res, 'there was a problem adding the favorite movie', 404);
   }
 };
 
 const getAllFavoritesMovies = async (req, res, next) => {
-  const allFilms = await favoriteMovieModel.findAll({
-    where: { UserId: req.user.id },
-    include: [
-      {
-        model: userModel,
-      },
-    ],
-  });
+  try {
+    const allFilms = await favoriteMovieModel.findAll({
+      where: { UserId: req.user.id },
+      include: [
+        {
+          model: userModel,
+        },
+      ],
+    });
 
-  const filmReduced = allFilms.map((film) => {
-    if (film.review != null) {
-      return film;
-    } else {
-      return {
-        id: film.id,
-        MovieCode: film.MovieCode,
-        UserId: film.UserId,
-      };
-    }
-  });
-  res.status(200).json(filmReduced);
+    const filmReduced = allFilms.map((film) => {
+      if (film.review != null) {
+        return film;
+      } else {
+        return {
+          id: film.id,
+          MovieCode: film.MovieCode,
+          UserId: film.UserId,
+        };
+      }
+    });
+    res.status(200).json(filmReduced);
+  } catch (error) {
+    console.log(error);
+    handleError(
+      res,
+      'There was an Error obtaining all the favorites movies',
+      404
+    );
+  }
 };
 
 module.exports = {
