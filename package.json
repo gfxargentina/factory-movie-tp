@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
+    "test-coverage": "nyc --reporter=html --reporter=text mocha src/test/app.test.js --exit ",
     "test": "mocha src/test/app.test.js --exit ",
     "db:create": "npx sequelize-cli db:create",
     "db:migrate": "npx sequelize-cli db:migrate",
@@ -25,6 +26,7 @@
     "mocha": "^10.1.0",
     "morgan": "^1.10.0",
     "node-fetch": "^3.2.10",
+    "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
     "pg": "^8.8.0",
     "pg-hstore": "^2.3.4",
@@ -32,6 +34,7 @@
     "supertest": "^6.3.1"
   },
   "devDependencies": {
+    "nyc": "^15.1.0",
     "sequelize-cli": "^6.5.2"
   }
 }

@@ -1,5 +1,4 @@
 const crypto = require('crypto');
-const { resolveSoa } = require('dns/promises');
 
 const { handleError } = require('../middlewares/handleError');
 const movieModel = require('../database/models').Movie;
