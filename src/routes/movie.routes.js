@@ -14,7 +14,6 @@ const { isAdminRole, hasARole } = require('../middlewares/validate-role');
 
 const router = Router();
 
-router.get('/:id', validateJWT, hasARole('ADMIN', 'USER'), getMovieById);
 router.get('/', getAllMovies);
 router.get(
   '/details',
@@ -35,6 +34,8 @@ router.get(
   hasARole('ADMIN', 'USER'),
   getAllFavoritesMovies
 );
+
+router.get('/:id', validateJWT, hasARole('ADMIN', 'USER'), getMovieById);
 
 router.put('/stock/:code', validateJWT, isAdminRole, updateMovieStock);
 
