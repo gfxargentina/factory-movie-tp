@@ -28,7 +28,7 @@ let transporter = nodemailer.createTransport({
 // });
 
 const register = async (req, res) => {
-  const { firstName, lastName, email, address } = req.body;
+  const { firstName, lastName, email, address, role } = req.body;
 
   try {
     let findUser = await userModel.findOne({
@@ -50,6 +50,7 @@ const register = async (req, res) => {
       email,
       password,
       address,
+      role,
       verified: false,
     };
     const user = await userModel.create(newUser);
@@ -160,6 +161,13 @@ const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    const verifiedUser = await userModel.findOne({ where: { email: email } });
+    if (verifiedUser.verified === false) {
+      return res.status(401).json({
+        msg: 'The user is not verified, please check your email for the verification link.',
+      });
+    }
+
     const user = await userModel.findOne({ where: { email: email } });
     if (!user) {
       return res.status(400).json({
