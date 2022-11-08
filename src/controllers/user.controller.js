@@ -51,7 +51,42 @@ const allUserMovies = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const newUser = req.body;
+
+    await userModel.update(newUser, {
+      where: { id: id },
+    });
+
+    const updatedUser = await userModel.findByPk(id);
+
+    res.status(200).json({
+      msg: 'User Updated',
+      updatedUser,
+    });
+  } catch (error) {
+    handleError(res, 'There was an Error obtaining all the Users Movies', 400);
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await userModel.destroy({
+      where: { id },
+    });
+    res.status(200).json({
+      msg: 'User Deleted',
+    });
+  } catch (error) {
+    handleError(res, 'There was an Error deleting the User', 400);
+  }
+};
 module.exports = {
   getAllUserRentals,
   allUserMovies,
+  updateUser,
+  deleteUser,
 };
