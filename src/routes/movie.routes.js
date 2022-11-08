@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const {
+  getMovieById,
   getAllMovies,
   getAllMoviesDetails,
   addNewMovie,
@@ -11,7 +12,8 @@ const { isAdminRole, hasARole } = require('../middlewares/validate-role');
 
 const router = Router();
 
-router.get('/', validateJWT, hasARole('USER'), getAllMovies);
+router.get('/:id', validateJWT, hasARole('USER'), getMovieById);
+router.get('/', getAllMovies);
 router.get('/details', validateJWT, hasARole('USER'), getAllMoviesDetails);
 router.post('/', validateJWT, hasARole('USER'), addNewMovie);
 router.post(

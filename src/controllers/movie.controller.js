@@ -15,6 +15,20 @@ const getMoviesByName = async (name) => {
   return movies.find((movie) => movie.title.includes(name));
 };
 
+const getMovieById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const movie = await movieModel.findByPk(id);
+    if (!movie) {
+      return res.status(404).json({ msg: 'Movie Not Found' });
+    }
+
+    res.status(200).json({ movie });
+  } catch (error) {
+    handleError(res, 'There was an Error obtaining the movie', 400);
+  }
+};
+
 const getAllMovies = async (req, res) => {
   try {
     let movies = await fetch(API);
@@ -23,7 +37,7 @@ const getAllMovies = async (req, res) => {
       title: movie.title,
       release_date: movie.release_date,
     }));
-    res.status(200).send(movies);
+    res.status(200).send({ movies });
   } catch (error) {
     console.log(error);
     handleError(res, 'There was an Error obtaining all the movies', 404);
@@ -138,4 +152,5 @@ module.exports = {
   addNewMovie,
   addFavouriteMovie,
   getAllFavoritesMovies,
+  getMovieById,
 };
