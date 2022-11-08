@@ -171,6 +171,26 @@ const deleteMovie = async (req, res) => {
   }
 };
 
+const updateMovieStock = async (req, res) => {
+  const { code } = req.params;
+  const newStock = req.body;
+
+  try {
+    await movieModel.update(newStock, {
+      where: { code: code },
+    });
+
+    const updatedStock = await movieModel.findOne({ where: { code: code } });
+
+    res.status(200).json({
+      msg: 'Movie Stock Updated',
+      updatedStock,
+    });
+  } catch {
+    handleError(res, 'there was an error trying to update movie stock', 400);
+  }
+};
+
 module.exports = {
   getAllMovies,
   getAllMoviesDetails,
@@ -179,4 +199,5 @@ module.exports = {
   getAllFavoritesMovies,
   getMovieById,
   deleteMovie,
+  updateMovieStock,
 };
