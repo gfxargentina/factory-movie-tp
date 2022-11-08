@@ -112,52 +112,6 @@ const returnMovie = async (req, res, next) => {
     console.log(error);
     handleError(res, 'there was an error trying to return the movie', 404);
   }
-
-  //   rentalModel
-  //     .update(
-  //       { userRefund_date: Date.now() },
-  //       { where: { code: code, user_id: req.user.id } }
-  //     )
-  //     .then(async (rent) => {
-  //       let updatedMovieRent = await rentalModel.findOne({
-  //         where: { code: code },
-  //       });
-  //       let movie = await movieModel.findOne({ where: { code: code } });
-  //       movieModel
-  //         .update({ stock: movie.stock + 1 }, { where: { code: code } })
-  //         .then(async () => {
-  //           if (
-  //             daysDifference(
-  //               updatedMovieRent.rental_date,
-  //               updatedMovieRent.userRefund_date
-  //             ) <=
-  //             daysDifference(
-  //               updatedMovieRent.rental_date,
-  //               updatedMovieRent.refund_date
-  //             )
-  //           ) {
-  //             const daysDiff = daysDifference(rent.rental_date, rent.refund_date);
-
-  //             res.status(200).send({
-  //               msg: `Entrega a tiempo, Precio final $${daysDiff}`,
-  //             });
-  //           } else {
-  //             //res.send('hacer multa');
-  //             await res.status(200).send({
-  //               msg: `Late delivery, Final price: ${lateRefund(
-  //                 daysDifference(
-  //                   updatedMovieRent.rental_date,
-  //                   updatedMovieRent.refund_date
-  //                 ) * 10,
-  //                 daysDifference(
-  //                   updatedMovieRent.userRefund_date,
-  //                   updatedMovieRent.refund_date
-  //                 )
-  //               )} `,
-  //             });
-  //           }
-  //         });
-  //     });
 };
 
 const daysDifference = (start, end) => {
