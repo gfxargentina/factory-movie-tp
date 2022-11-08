@@ -146,6 +146,26 @@ const getAllFavoritesMovies = async (req, res, next) => {
   }
 };
 
+const updateMovieStock = async (req, res) => {
+  const { code } = req.params;
+  const newStock = req.body;
+
+  try {
+    await movieModel.update(newStock, {
+      where: { code: code },
+    });
+
+    const updatedStock = await movieModel.findOne({ where: { code: code } });
+
+    res.status(200).json({
+      msg: 'Movie Stock Updated',
+      updatedStock,
+    });
+  } catch {
+    handleError(res, 'there was an error trying to update movie stock', 400);
+  }
+};
+
 const deleteMovie = async (req, res) => {
   try {
     const { code } = req.params;
@@ -168,26 +188,6 @@ const deleteMovie = async (req, res) => {
     });
   } catch (error) {
     handleError(res, 'There was an Error deleting the User', 400);
-  }
-};
-
-const updateMovieStock = async (req, res) => {
-  const { code } = req.params;
-  const newStock = req.body;
-
-  try {
-    await movieModel.update(newStock, {
-      where: { code: code },
-    });
-
-    const updatedStock = await movieModel.findOne({ where: { code: code } });
-
-    res.status(200).json({
-      msg: 'Movie Stock Updated',
-      updatedStock,
-    });
-  } catch {
-    handleError(res, 'there was an error trying to update movie stock', 400);
   }
 };
 
