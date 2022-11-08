@@ -6,6 +6,7 @@ const {
   addNewMovie,
   addFavouriteMovie,
   getAllFavoritesMovies,
+  deleteMovie,
 } = require('../controllers/movie.controller');
 const validateJWT = require('../middlewares/validate-jwt');
 const { isAdminRole, hasARole } = require('../middlewares/validate-role');
@@ -23,5 +24,6 @@ router.post(
   addFavouriteMovie
 );
 router.get('/favorite', validateJWT, hasARole('USER'), getAllFavoritesMovies);
+router.delete('/:code', validateJWT, isAdminRole, deleteMovie);
 
 module.exports = router;

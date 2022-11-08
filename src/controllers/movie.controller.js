@@ -146,6 +146,31 @@ const getAllFavoritesMovies = async (req, res, next) => {
   }
 };
 
+const deleteMovie = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const movie = await movieModel.findOne({ where: { code: code } });
+
+    if (!movie) {
+      handleError(
+        res,
+        'The movie does not exist or has already been deleted',
+        404
+      );
+    }
+
+    await movieModel.destroy({
+      where: { code },
+    });
+    res.status(200).json({
+      msg: 'Movie Deleted',
+    });
+  } catch (error) {
+    handleError(res, 'There was an Error deleting the User', 400);
+  }
+};
+
 module.exports = {
   getAllMovies,
   getAllMoviesDetails,
@@ -153,4 +178,5 @@ module.exports = {
   addFavouriteMovie,
   getAllFavoritesMovies,
   getMovieById,
+  deleteMovie,
 };
