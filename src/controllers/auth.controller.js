@@ -189,8 +189,15 @@ const login = async (req, res) => {
   }
 };
 
+const logOut = (req, res) => {
+  req.user = null;
+
+  res.status(200).json({ msg: 'User Logged Out' });
+};
+
 module.exports = {
   register,
   login,
   verifyEmail,
+  logOut,
 };
