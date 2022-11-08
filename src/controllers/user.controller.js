@@ -74,9 +74,16 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
+    const user = await userModel.findOne({ where: { id: id } });
+
+    if (!user) {
+      handleError(res, 'User does not exist or has already been deleted', 404);
+    }
+
     await userModel.destroy({
       where: { id },
     });
+
     res.status(200).json({
       msg: 'User Deleted',
     });
@@ -84,6 +91,7 @@ const deleteUser = async (req, res) => {
     handleError(res, 'There was an Error deleting the User', 400);
   }
 };
+
 module.exports = {
   getAllUserRentals,
   allUserMovies,
