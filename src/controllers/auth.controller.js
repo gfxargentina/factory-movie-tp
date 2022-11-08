@@ -82,10 +82,7 @@ const sendVerificationEmail = async ({ id, email }, res) => {
     from: process.env.AUTH_EMAIL,
     to: email,
     subject: 'Verify your Email',
-    html: `<p>Verify your email address to complete the signup and login into your account</p>
-    <p>This link expires in 1 hour</p><p>Press <a href=${
-      currentUrl + 'auth/user/verify' + '/' + id + '/' + uniqueString
-    }> here </a> to proceed</p>`,
+    html: `Verify your email address to complete the signup and login into your account <a href=${`http://localhost:3002/auth/user/verify/${id}/${uniqueString}`}>Press Here</a> `,
   };
 
   //hash the uniqueString
@@ -139,23 +136,24 @@ const verifyEmail = async (req, res) => {
   }
 
   const confirmUser = bcrypt.compareSync(uniqueString, user.unique_string);
+
   if (confirmUser) {
+    //actualiza el usuario a verificado
+    await userModel.update(
+      {
+        verified: true,
+      },
+      {
+        where: { id: id },
+      }
+    );
+    //borra la verificacion
+    await userVerificationModel.destroy({ where: { user_id: id } });
+
+    res.redirect('/auth/verified');
+  } else {
     return res.send({ msg: 'wrong verification code' });
   }
-
-  //actualiza el usuario a verificado
-  await userModel.update(
-    {
-      verified: true,
-    },
-    {
-      where: { id: id },
-    }
-  );
-  //borra la verificacion
-  await userVerificationModel.destroy({ where: { user_id: id } });
-
-  res.redirect('/auth/verified');
 };
 
 const login = async (req, res) => {
