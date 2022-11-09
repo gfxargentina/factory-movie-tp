@@ -1,4 +1,4 @@
-const handleError = (res, message = 'Something went Wrong', code = 403) => {
+const handleError = (res, message = 'Something went Wrong', code = 500) => {
   res.status(code);
   res.send({ error: message });
 };
