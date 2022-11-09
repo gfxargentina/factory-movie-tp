@@ -312,63 +312,6 @@ describe('Post /Rental ', () => {
   });
 });
 
-// describe('POST /rent/:code', () => {
-//   beforeEach((done) => {
-//     // Crear usuario, pelicula
-//   });
-//   it('Should return 201 and successfully rent a movie', (done) => {
-//     //TO_DO
-//     //Check status
-//     //Chequear si se persistio correctamente la reserva
-//     //Chequear que se quito una peli de stock
-//     //Chequear que se sumo la renta a las veces alquiladas
-//   });
-//   it('Should not allow rent if there is no stock', (done) => {
-//     //TO-DO
-//   });
-//   it('Should not allow rent if movie does not exist', (done) => {
-//     //TO-DO
-//   });
-//   it('Should not allow non logged user to rent a movie', (done) => {
-//     //TO-DO
-//   });
-// });
-
-// describe('POST /return/:code', (done) => {
-//   beforeEach((done) => {
-//     // Crear usuario, pelicula, y rentas, una vencida y una sin vencer
-//   });
-//   it('Should return a rental on time', (done) => {
-//     //TO-DO
-//     //Chequear status code 200
-//     //Chequear que se devuelva correctamente el precio
-//     //Chequear que se restockee correctamente la pelicula
-//     //Chequear que se persitio la fecha de devolucion
-//   });
-//   it('Should return late rental', (done) => {
-//     //TO-DO
-//     //Chequear status code 200
-//     //Chequear que se devuelva correctamente el precio con el agregado
-//     //Chequear que se restockee correctamente la pelicula
-//     //Chequear que se persitio la fecha de devolucion
-//   });
-//   it('Should return a movie that was rented a second time', (done) => {
-//     //TO-DO
-//   });
-//   it('Should not allow to rent movie twice simultaneously', (done) => {
-//     //TO-DO
-//   });
-//   it('Should not allow to return already returned movie', (done) => {
-//     //TO-DO
-//   });
-//   it('Should not allow to return non rented movie', (done) => {
-//     //TO-DO
-//   });
-//   it('Should not allow non logged user to return a movie', (done) => {
-//     //TO-DO
-//   });
-//});
-
 describe('Negative Tests', () => {
   let token;
   before(function (done) {
