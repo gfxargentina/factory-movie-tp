@@ -18,11 +18,6 @@ const { User } = db;
 const bcrypt = require('bcryptjs');
 const { BaseError } = require('sequelize');
 
-const userModel = require('../database/models').User;
-const rentalModel = require('../database/models').Rental;
-const movieModel = require('../database/models').Movie;
-const favoriteModel = require('../database/models').Favorite;
-
 // beforeEach(() => {
 //   db.sequelize.truncate({ cascade: true });
 // });
