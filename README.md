@@ -21,6 +21,8 @@ Proyecto Final de una tienda de alquiler de peliculas offline, con autenticacion
 - npm run db:create , para crear la base de datos
 - npm run db:migrate , para hacer las migraciones
 - npm run db:seed , para ingresar usuarios y peliculas demo
+- npm run db:undoall , para deshacer las migraciones
+- npm run test , para correr los tests
 
 ### Usuario Admin
 
