@@ -5,6 +5,7 @@ const rentalModel = require('../database/models').Rental;
 const movieModel = require('../database/models').Movie;
 
 const getAllUserRentals = async (req, res) => {
+  console.log(req.authorization);
   try {
     const allUsers = await userModel.findAll({
       include: [

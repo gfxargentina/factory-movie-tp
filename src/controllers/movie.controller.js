@@ -45,6 +45,7 @@ const getAllMovies = async (req, res) => {
 };
 
 const getAllMoviesDetails = async (req, res) => {
+  console.log(req.token);
   try {
     let movies = await fetch(API);
     movies = await movies.json();
