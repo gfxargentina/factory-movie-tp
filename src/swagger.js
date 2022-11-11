@@ -11,7 +11,7 @@ const options = {
         'Skill Factory NodeJs: Proyecto Final de una tienda de alquiler de peliculas offline, con autenticacion/autorizacion y CRUD. Confirmacion de Cuenta de usuario por email.',
       version: '1.0.0',
     },
-    servers: [{ url: 'http://localhost:3002' }],
+    servers: [{ url: 'https://factory-movie.onrender.com' }],
   },
 
   apis: [`${path.join(__dirname, './routes/*.js')} `],
