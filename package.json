@@ -4,7 +4,7 @@
   "description": "Trabajo Practico Final - Skill Factory NodeJS by Avalith",
   "main": "index.js",
   "scripts": {
-    "start": "npm run db:create && npm run db:migrate && node src/index.js",
+    "start": "npm run db:migrate && node src/index.js",
     "dev": "nodemon src/index.js",
     "test-coverage": "nyc --reporter=html --reporter=text mocha src/test/app.test.js --exit ",
     "test": "mocha src/test/app.test.js --exit ",
