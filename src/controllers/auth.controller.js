@@ -85,7 +85,7 @@ const sendVerificationEmail = async ({ id, email }, res) => {
     from: process.env.AUTH_EMAIL,
     to: email,
     subject: 'Verify your Email',
-    html: `Verify your email address to complete the signup and login into your account <a href=${`http://localhost:3002/auth/user/verify/${id}/${uniqueString}`}>Press Here</a> `,
+    html: `Verify your email address to complete the signup and login into your account <a href=${`https://factory-movie.onrender.com/auth/user/verify/${id}/${uniqueString}`}>Press Here</a> `,
   };
 
   //hash the uniqueString
