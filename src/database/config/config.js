@@ -16,10 +16,10 @@ module.exports = {
     dialect: 'postgres',
   },
   production: {
-    username: 'root',
-    password: null,
-    database: 'database_production',
-    host: 'localhost',
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: 'dpg-cdmsrmqen0hreuh26bh0-a',
     dialect: 'postgres',
   },
 };
