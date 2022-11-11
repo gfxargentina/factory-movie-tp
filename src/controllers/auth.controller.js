@@ -10,7 +10,9 @@ require('dotenv').config();
 
 //nodemailer
 let transporter = nodemailer.createTransport({
-  service: 'gmail.com',
+  //service: 'gmail.com',
+  host: 'smtp.mailtrap.io',
+  port: 2525,
   auth: {
     user: process.env.AUTH_EMAIL,
     pass: process.env.AUTH_PASS,
@@ -196,7 +198,9 @@ const login = async (req, res) => {
 };
 
 const logOut = (req, res) => {
-  req.user = null;
+  //req.user.destroy();
+
+  req.headers.authorization = '';
 
   res.status(200).json({ msg: 'User Logged Out' });
 };
