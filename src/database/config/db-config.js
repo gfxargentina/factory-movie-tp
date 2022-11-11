@@ -6,7 +6,7 @@ const dbConnection = async () => {
     process.env.DB_USERNAME,
     process.env.DB_PASSWORD,
     {
-      host: 'localhost',
+      host: 'dpg-cdmsrmqen0hreuh26bh0-a',
       dialect: 'postgres',
     }
   );
